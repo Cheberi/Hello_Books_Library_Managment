@@ -1,0 +1,552 @@
+FORMAT: 1A
+HOST: https://shielded-peak-77124.herokuapp.com
+
+# Hello_Books
+
+Hello-Books is a simple application that helps manage a library and its processes like stocking, tracking and renting books. 
+
+## User Registration [/api/v1/auth/register]
+    
+### Create a user account [POST]
+
+You can create a user account with a Json request of email, username and password. 
+The username lenght should be greater than 4.
+The length minimum lenght of password is 8.
+
++ Request (application/json)
+
+        {
+            "email": "johndoe@gmail.com",
+            "username": "johndoe",
+            "password": "johndoe123"
+        }
+
++ Response 201 (application/json)
+
+
+        {
+            "Message": "The User is successfully Registered."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "Message": "Provide email, username and password!"
+        }
+            
++ Response 400 (application/json)
+
+        {
+            "Message": "Please provide a valid email!"
+        }
+        
++ Response 400 (application/json)
+
+        {
+            "Message": "Password is short!"
+        }
+            
++ Response 409 (application/json)
+
+        {
+            "Message": "The username is already taken!"
+        }
+            
++ Response 422 (application/json)
+
+        {
+            "Message": "The user is already registered."
+        }
+
+
+## User Login [/api/v1/auth/login]
+
+### Login user [POST]
+
+You can login user by sending an email and password.
+
++ Request (application/json)
+
+        {
+            "email": "johndoe@gmail.com",
+            "password": "johndoe123"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "Message'": "Successfully logged in.", 
+            "Access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9b1pP_lLMWIGfAO1Y"
+        }
+
++ Response 403 (application/json)
+
+        {
+          "Message": "Invalid email!"
+        }
+        
++ Response 400 (application/json)
+
+        {
+         "Message": "Fill all fields!"
+        }
+            
+## User Logout [/api/v1/auth/logout]
+
+### Logout a user [POST]
+
+You can logout a user in session by making the session to False.
+
++ Request (application/json)
+
+    + Headers
+    
+            Access_token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9b1pP_lLMWIGfAO1Y"
+
++ Response 202 (application/json)
+
+        {
+            "Message": "Your logged out."
+        }
+            
++ Response 500 (application/json)
+
+        {
+            "Error": "Internal server error"
+        }
+            
++ Response 401 (application/json)
+
+        {
+            "Message": "Token is missing. Please provide a valid token"
+        }
+
++ Response 401 (application/json)
+
+        {
+            "Message": "Token is missing. Please provide a valid token"
+        }
+        
+## Reset Password [/api/v1/auth/reset-password]
+
+### Reset User Password [POST]
+
+You may reset password by providing a registered email. 
+
++ Request (application/json)
+
+        {
+            "email": "johndoe@gmail.com",
+            "password": "newjohndoe123"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "Message": "Password is reset successfully."
+        }
+            
++ Response 400 (application/json)
+
+        {
+            "Message": "Password is short!"
+        }
+        
++ Response 404 (application/json)
+
+        {
+            "Message": "The email does not exist."
+        }
+        
+
+## Books Resources [/api/v1/books]
+
+### Retrieve all books [GET]
+You can get all books available in the library store.
+
++ Response 200 (application/json)
+
+        [
+            "Total Pages": 3,
+            "Next page": 3,
+            "Previous page": 1,
+            "Current page": 2,
+            "Total results": 12,
+            "All books": [
+                {
+            "authors": "John Doe",
+            "book_id": 5926,
+            "book_title": "The Lion shift",
+            "year": "2008",
+            "copies": 3
+            },
+            {
+            "authors": "Jack Michael",
+            "book_id": 5545,
+            "book_title": "Mr Lee",
+            "year": "2011",
+            "copies": 2
+            }
+            ]
+            
+        ]
+        
++ Response 404 (application/json)
+
+        {
+            "Message": "Books not found"
+        }
+
+### Add book [POST]
+
+You can add a book when you are an admin.
+
++ Request (application/json)
+
+    + Headers
+    
+            Access_token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9b1pP_lLMWIGfAO1Y"
+    
+    + Body
+    
+            {
+                "authors": "Jack Michael",
+                "book_title": "Mr Lee",
+                "year": "2011",
+                "copies": "2"
+            }
+
++ Response 201 (application/json)
+
+            [
+                
+            {
+                "Message": "The book was added successfully.",
+                    "Book Added": {
+                        "authors": "Jack Michael",
+                        "book_id": 1570,
+                        "book_title": "Mr Lee",
+                        "year": "2011",
+                        "copies": 2
+                    }
+            ]
+            
++ Response 400 (application/json)
+
+        {
+            "Message": "Please fill all the details."
+        }
+        
++ Response 401 (application/json)
+
+        {
+            "Message": "Expired token, please login in again"
+        }
+        
++ Response 401 (application/json)
+
+        {
+            "Message": "Token is missing. Please provide a valid token"
+        }
+            
+## Single Book Resources [/api/v1/books/{book_id}]
+
++ parameters
+
+    + book_id (required, Int)
+
+### Retrieve one book [GET]
+You can get one book from the library store.
+            
++ Response 200 (application/json)
+
+        [
+            {
+                "Book": {
+                    "authors": "Jack Michael",
+                    "book_id": 1570,
+                    "book_title": "Mr Lee",
+                    "year": "2011",
+                    "copies": 2
+                        }
+            }
+        ]
+        
++ Response 404 (application/json)
+
+        {
+            "Error": "Book not found."
+        }
+
+### Delete book [DELETE]
+
+You can delete a single book as an admin.
+
++ Request (application/json)
+
+    + Headers
+    
+            Access_token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9b1pP_lLMWIGfAO1Y"
+
++ Response 200 (application/json)
+
+        {
+            "Message": "The book was deleted successfully."
+        }
+            
++ Response 404 (application/json)
+
+        {
+            "Error": "Book not found."
+        }
+        
++ Response 401 (application/json)
+
+        {
+            "Message": "Expired token, please login in again"
+        }
+        
++ Response 401 (application/json)
+
+        {
+            "Message": "Token is missing. Please provide a valid token"
+        }
+
+### Edit book [PUT]
+
+You can edit single book as an admin.
+
++ Request (application/json)
+
+    + Headers
+    
+            Access_token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9b1pP_lLMWIGfAO1Y"
+            
+    + Body
+
+            {
+                "authors": "Jack Michael",
+                "book_title": "Edited Book",
+                "year": "2011",
+                "copies": "2
+            }
+
++ Response 201 (application/json)
+
+            {
+            "Success": {
+                "authors": "Jack Michael",
+                "book_id": 1570,
+                "book_title": "Edited Book",
+                "year": "2011",
+                "copies": 2
+                }
+            }
+        
++ Response 404 (application/json)
+
+        {
+            "message": "The book is not found."
+        }
+        
++ Response 401 (application/json)
+
+        {
+            "Message": "Expired token, please login in again"
+        }
+        
++ Response 401 (application/json)
+
+        {
+            "Message": "Token is missing. Please provide a valid token"
+        }
+
+## Borrow and Return Book [/api/users/books/{book_id}]
+
++ parameters
+
+    + book_id (required, Int)
+    
+### Borrow a book [POST]
+
+You can borrow a book available in the library.
+
++ Request (application/json)
+
+    + Headers
+    
+            Access_token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9b1pP_lLMWIGfAO1Y"
+            
+
++ Response 202 (application/json)
+
+        {
+            "message": "successfully borrowed a book"
+        }
+            
++ Response 404 (application/json)
+
+        {
+            "Error": "Book not found."
+        }
+        
++ Response 401 (application/json)
+
+        {
+            "Message": "Expired token, please login in again"
+        }
+        
++ Response 401 (application/json)
+
+        {
+            "Message": "Token is missing. Please provide a valid token"
+        }
+
+    
+### Return a book [PUT]
+
+User can return a book borrowed
+
++ Request (application/json)
+
+    + Headers
+    
+            Access_token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9b1pP_lLMWIGfAO1Y"
+
+
++ Response 202 (application/json)
+
+        {
+            "message": "successfully borrowed a book"
+        }
+            
++ Response 404 (application/json)
+
+        {
+            "Error": "Book not found."
+        }
+        
++ Response 401 (application/json)
+
+        {
+            "Message": "Expired token, please login in again"
+        }
+        
++ Response 401 (application/json)
+
+        {
+            "Message": "Token is missing. Please provide a valid token"
+        }
+        
+
+## Borrow History List [/api/v1/users/books]
+
+### Retrieve all borrowed books history [GET]
+User can get the books that has ever borrowed
+
++ Request (application/json)
+
+    + Headers
+    
+            Access_token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9b1pP_lLMWIGfAO1Y"
+
++ Response 200 (application/json)
+
+        [
+            "Next page": 3,
+            "Number of pages": 2,
+            "Previous page": 1,
+            "Current page": 2,
+            "Total results": 5,
+            "All borrowed books": [
+            {
+            "borrow_id": 3132,
+            "user_id": 6816,
+            "returned": false,
+            "book_id": 5926
+            },
+            {
+            "borrow_id": 9998,
+            "user_id": 6816,
+            "returned": true,
+            "book_id": 5926
+            },
+            {
+            "borrow_id": 3805,
+            "user_id": 6816,
+            "returned": false,
+            "book_id": 5926
+            }
+            ]
+        ]
+        
++ Response 404 (application/json)
+
+        {
+            "Message": "You have not borrowed any book."
+        }
+        
++ Response 401 (application/json)
+
+        {
+            "Message": "Expired token, please login in again"
+        }
+        
++ Response 401 (application/json)
+
+        {
+            "Message": "Token is missing. Please provide a valid token"
+        }
+
+## Unreturned Borrow History [/api/v1/users/books?returned=false]
+
+### Retrieve books yet to return [GET]
+User can get books that is yet to return
+
++ Request (application/json)
+
+    + Headers
+    
+            Access_token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9b1pP_lLMWIGfAO1Y"
+
++ Response 200 (application/json)
+
+        [
+            "Next page": 3,
+            "Number of pages": 2,
+            "Previous page": 1,
+            "Current page": 2,
+            "Total results": 5,
+            "All borrowed books": [
+            {
+            "borrow_id": 3132,
+            "user_id": 6816,
+            "returned": false,
+            "book_id": 5926
+            },
+            {
+            "borrow_id": 3805,
+            "user_id": 6816,
+            "returned": false,
+            "book_id": 5926
+            }
+            ]
+        ]
+        
++ Response 404 (application/json)
+
+        {
+            "Message": "You do not have books that are un-returned"
+        }
+        
++ Response 401 (application/json)
+
+        {
+            "Message": "Expired token, please login in again"
+        }
+        
++ Response 401 (application/json)
+
+        {
+            "Message": "Token is missing. Please provide a valid token"
+        }
