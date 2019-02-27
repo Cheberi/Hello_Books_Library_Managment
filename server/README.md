@@ -13,19 +13,19 @@ Hello-Books is a simple application that helps manage a library and its processe
 # API Endpoints
 |Endpoint                            | Functionality                    |HTTP method 
 |------------------------------------|----------------------------------|-------------
-|/api/v1/books                       |Add a book                        |POST        
-|/api/v1/books/*book_id*             |modify a book’s information       |PUT
-|/api/v1/books/*book_id*             |Remove a book                     |DELETE
-|/api/v1/books                       |Retrieves all books               |GET
-|/api/v1/books/*book_id*             |Get a book                        |GET
-|/api/v1/users/books/*book_id*       |Borrow a book                     |POST
-|/api/v1/users/books/*book_id*       |Return a book                     |PUT
-|/api/v1/users/books                 |Get User borrowing history        |GET
-|/api/v1/users/books?returned=false  |Get books not yet been returned   |GET 
-|/api/v1/auth/register               |Creates a user account            |POST
-|/api/v1/auth/login                  |Logs in a user                    |POST
-|/api/v1/auth/logout                 |Logs out a user                   |POST
-|/api/v1/auth/reset-password         |Password reset                    |POST
+|/books                       |Add a book                        |POST        
+|/books/*book_id*             |modify a book’s information       |PUT
+|/books/*book_id*             |Remove a book                     |DELETE
+|/books                       |Retrieves all books               |GET
+|/books/*book_id*             |Get a book                        |GET
+|/users/books/*book_id*       |Borrow a book                     |POST
+|/users/books/*book_id*       |Return a book                     |PUT
+|/users/books                 |Get User borrowing history        |GET
+|/users/books?returned=false  |Get books not yet been returned   |GET 
+|/auth/register               |Creates a user account            |POST
+|/auth/login                  |Logs in a user                    |POST
+|/auth/logout                 |Logs out a user                   |POST
+|/auth/reset-password         |Password reset                    |POST
 
 
    
@@ -52,7 +52,7 @@ Hello-Books is a simple application that helps manage a library and its processe
    To run test, use: `coverage run -m unittest discover`
    
 # Deployment Link
-   Link: https://shielded-peak-77124.herokuapp.com
+   Link: https://stark-falls-93345.herokuapp.com
    
 # Designs Link
    Link: https://ezrqnkemboi.github.io/hello_books_designs/
